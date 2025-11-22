@@ -31,7 +31,7 @@ class RestaurantOrderManagement:
             quantity_entry.grid(row=i,column=1,pady=5,padx=10)
             self.menu_quantities[item]=quantity_entry
         self.currency_var=tk.StringVar()
-        ttk.label(frame,text="Select Currency:").grid(row=len(self.menu_items)+1,column=0,pady=10,padx=10,sticky=tk.W)
+        ttk.Label(frame,text="Select Currency:").grid(row=len(self.menu_items)+1,column=0,pady=10,padx=10,sticky=tk.W)
 
         currency_menu=ttk.Combobox(frame,textvariable=self.currency_var,values=["USD","INR"],state="readonly",width=18)
         currency_menu.grid(row=len(self.menu_items)+1,column=1,pady=10,padx=10)
@@ -39,18 +39,21 @@ class RestaurantOrderManagement:
         self.currency_var.trace("w",self.update_prices)
         order_button=ttk.Button(frame,text="Place Order",command=self.place_order)
         order_button.grid(row=len(self.menu_items)+2,columnspan=2,pady=15,padx=10)
+
     def setup_background(self,root):
         canvas=tk.Canvas(root,width=800,height=600)
-        canvas.pack()
-
+        canvas.place(x=0,y=0,relwidth=1,relheight=1)
+       
         
-        original_image=tk.PhotoImage(file="Bg.jpg")
+        original_image=ttk.PhotoImage(file=r"C:\Users\Shweta Pal\Downloads\Python Folder\Restaurant Management System\background.jpeg")
+        bg_width=800
+        bg_height=600
         background_image=original_image.subsample(
-        original_image.width() // bg_width,
-        original_image.height() // bg_height)
-        canvas.create_image(0,0,anchor="tk.w",image=background_image)
+        max(1, original_image.width() // bg_width),
+        max(1,original_image.height() // bg_height))
+        canvas.create_image(0,0,anchor="tk.NW",image=background_image)
         canvas.image=background_image
-        canvas.lower("all")
+        
     def update_prices(self,*args):
         currency=self.currency_var.get()
         for item,base_price in self.menu_items.items():
